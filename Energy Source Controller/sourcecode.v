@@ -35,15 +35,15 @@ energy_consumption_calculator energy_calc (
     .energy_consumption(energy_consumption),
     .cost(cost)
 );
-energy_source_decision_controller decision_ctrl (
+energy_source_controller decision_ctrl (
+    .total_load(total_load),
     .solar_generation(solar_generation),
     .battery_status(battery_status),
+    .day_flag(day_flag)
     .cost(cost),
     .solar_mode(solar_mode),
     .battery_mode(battery_mode),
     .grid_mode(grid_mode)
-    .total_load(total_load),
-    .day_flag(day_flag)
 );
 endmodule
 u
