@@ -1,0 +1,28 @@
+[*] GTKWave Analyzer v3.3.118 (w)1999-2023 BSI
+[*] Auto-generated waveform layout for home energy controller
+[dumpfile] "home_energy_control.vcd"
+[timestart] 22000
+[size] 1920 1080
+[pos] -1 -1
+[sst_width] 320
+[signals_width] 280
+[sst_expanded] 1
+[sst_vpaned_height] 320
+@28
+tb_home_energy_source_controller.clk
+tb_home_energy_source_controller.reset
+tb_home_energy_source_controller.day_flag
+tb_home_energy_source_controller.battery_status
+tb_home_energy_source_controller.ac_on
+tb_home_energy_source_controller.fan_on
+tb_home_energy_source_controller.wm_on
+tb_home_energy_source_controller.bulb_on
+tb_home_energy_source_controller.fridge_on
+tb_home_energy_source_controller.solar_mode
+tb_home_energy_source_controller.battery_mode
+tb_home_energy_source_controller.grid_mode
+@22
+tb_home_energy_source_controller.dut.total_load[15:0]
+tb_home_energy_source_controller.dut.solar_generation[15:0]
+tb_home_energy_source_controller.dut.energy_consumption[15:0]
+tb_home_energy_source_controller.dut.cost[15:0]

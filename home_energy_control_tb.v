@@ -8,6 +8,7 @@ module tb_home_energy_source_controller;
     reg ac_on, fan_on, wm_on, bulb_on, fridge_on;
     reg day_flag;
     reg battery_status;
+    reg [2:0] case_id;
 
     wire solar_mode, battery_mode, grid_mode;
 
@@ -33,8 +34,10 @@ module tb_home_energy_source_controller;
 
     task run_case;
         input [8*40-1:0] name;
+        input [2:0] id;
         input i_ac, i_fan, i_wm, i_bulb, i_fridge, i_day, i_batt;
         begin
+            case_id = id;
             ac_on = i_ac;
             fan_on = i_fan;
             wm_on = i_wm;
@@ -61,22 +64,27 @@ module tb_home_energy_source_controller;
     endtask
 
     initial begin
+        // Generate waveform dump for GTKWave
+        $dumpfile("home_energy_control.vcd");
+        $dumpvars(0, tb_home_energy_source_controller);
+
         // Init
         reset = 1;
         ac_on = 0; fan_on = 0; wm_on = 0; bulb_on = 0; fridge_on = 0;
         day_flag = 0; battery_status = 0;
+        case_id = 0;
 
         #12;
         reset = 0;
 
         // Test scenarios
-        run_case("C1: Day, no load, battery off",     0,0,0,0,0,1,0);
-        run_case("C2: Day, light load, battery off",  0,1,0,1,0,1,0);
-        run_case("C3: Day, high load, battery on",    1,1,1,1,1,1,1);
-        run_case("C4: Day, high load, battery off",   1,1,1,1,1,1,0);
-        run_case("C5: Night, medium load, battery on",1,1,0,1,0,0,1);
-        run_case("C6: Night, medium load, battery off",1,1,0,1,0,0,0);
-        run_case("C7: Night, no load, battery on",    0,0,0,0,0,0,1);
+        run_case("C1: Day, no load, battery off",     1,0,0,0,0,0,1,0);
+        run_case("C2: Day, light load, battery off",  2,0,1,0,1,0,1,0);
+        run_case("C3: Day, high load, battery on",    3,1,1,1,1,1,1,1);
+        run_case("C4: Day, high load, battery off",   4,1,1,1,1,1,1,0);
+        run_case("C5: Night, medium load, battery on",5,1,1,0,1,0,0,1);
+        run_case("C6: Night, medium load, battery off",6,1,1,0,1,0,0,0);
+        run_case("C7: Night, no load, battery on",    7,0,0,0,0,0,0,1);
 
         #20;
         $finish;
