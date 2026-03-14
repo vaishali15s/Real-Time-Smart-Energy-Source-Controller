@@ -31,9 +31,6 @@ solar_generation_calculator solar_calc (
 );
 energy_consumption_calculator energy_calc (
     .total_load(total_load),
-    .energy_consumption(energy_consumption)
-);
-cost_calculator cost_calc (
     .energy_consumption(energy_consumption),
     .cost(cost)
 );
@@ -45,9 +42,4 @@ energy_source_decision_controller decision_ctrl (
     .battery_mode(battery_mode),
     .grid_mode(grid_mode)
 );
-
-
-
-
-    
 endmodule
