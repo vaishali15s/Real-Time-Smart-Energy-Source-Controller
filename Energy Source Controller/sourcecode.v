@@ -1,4 +1,5 @@
-module home_energy_source_controller ( input clk ,
+module home_energy_source_controller (
+input clk ,
 input reset , 
 input ac_on ,
 input fan_on ,
@@ -41,5 +42,7 @@ energy_source_decision_controller decision_ctrl (
     .solar_mode(solar_mode),
     .battery_mode(battery_mode),
     .grid_mode(grid_mode)
+    .total_load(total_load),
+    .day_flag(day_flag)
 );
 endmodule

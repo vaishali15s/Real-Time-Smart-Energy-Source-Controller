@@ -1,7 +1,7 @@
 module load_calculator (
     input ac_on,
     input wm_on,
-    input fan_on.
+    input fan_on,
     input bulb_on,
     input fridge_on,
     output reg [15:0] total_load
