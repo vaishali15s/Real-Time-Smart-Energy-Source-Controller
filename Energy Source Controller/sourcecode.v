@@ -39,11 +39,9 @@ energy_source_controller decision_ctrl (
     .total_load(total_load),
     .solar_generation(solar_generation),
     .battery_status(battery_status),
-    .day_flag(day_flag)
-    .cost(cost),
+    .day_flag(day_flag),
     .solar_mode(solar_mode),
     .battery_mode(battery_mode),
     .grid_mode(grid_mode)
 );
 endmodule
-u
