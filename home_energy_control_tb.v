@@ -83,9 +83,9 @@ module tb_home_energy_source_controller;
         $dumpvars(0, tb_home_energy_source_controller);
 
         // Dump FSM internals 
-        $dumpvars(0, dut.current_state);
-        $dumpvars(0, dut.next_state);
-        $dumpvars(0, dut.counter);
+        $dumpvars(0, dut.decision_ctrl.current_state);
+        $dumpvars(0, dut.decision_ctrl.next_state);
+        $dumpvars(0, dut.decision_ctrl.counter);
 
         // Init
         reset = 1;
@@ -118,9 +118,9 @@ module tb_home_energy_source_controller;
     initial begin
         $monitor("Time=%0t | CS=%b NS=%b CNT=%d | S=%b B=%b G=%b",
                   $time,
-                  dut.current_state,
-                  dut.next_state,
-                  dut.counter,
+                  dut.decision_ctrl.current_state,
+                  dut.decision_ctrl.next_state,
+                  dut.decision_ctrl.counter,
                   solar_mode, battery_mode, grid_mode);
     end
 
