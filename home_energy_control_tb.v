@@ -25,7 +25,7 @@ module tb_home_energy_source_controller;
         .fridge_on(fridge_on),
         .day_flag(day_flag),
         .battery_status(battery_status),
-        .solar_generation(solar_input),   // connect variable solar
+        .solar_generation(solar_input),   
         .solar_mode(solar_mode),
         .battery_mode(battery_mode),
         .grid_mode(grid_mode)
