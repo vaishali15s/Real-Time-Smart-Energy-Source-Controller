@@ -22,7 +22,7 @@ module energy_fsm (
     // -------------------------------
     // 2. State Registers
     // -------------------------------
-    reg [1:0] current_state, next_state, 
+    reg [1:0] current_state, next_state; 
     reg [1:0] target_state;
 
     // -------------------------------
