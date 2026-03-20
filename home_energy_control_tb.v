@@ -82,11 +82,6 @@ module tb_home_energy_source_controller;
         $dumpfile("home_energy_control.vcd");
         $dumpvars(0, tb_home_energy_source_controller);
 
-        // Dump FSM internals 
-        $dumpvars(0, dut.decision_ctrl.current_state);
-        $dumpvars(0, dut.decision_ctrl.next_state);
-        $dumpvars(0, dut.decision_ctrl.counter);
-
         // Init
         reset = 1;
         ac_on = 0; fan_on = 0; wm_on = 0; bulb_on = 0; fridge_on = 0;

@@ -103,9 +103,14 @@ module energy_fsm (
 
             // -------- TRANSITION STATE --------
             TRANSITION: begin
-                if (counter >= DELAY)
-                    next_state = target_state;
-                else
+                if (counter >= DELAY) begin
+                    if (day_flag && solar >= load)
+                        next_state = SOLAR;
+                    else if (battery_status)
+                        next_state = BATTERY;
+                    else
+                        next_state = GRID;
+                end else
                     next_state = TRANSITION;
             end
 
