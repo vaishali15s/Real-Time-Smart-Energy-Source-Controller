@@ -7,7 +7,7 @@ input wm_on ,
 input bulb_on ,
 input fridge_on , 
 input day_flag , // 1 for day and 0 for night
-input battery_status, 
+input [6:0] battery_soc, 
 output solar_mode ,
 output battery_mode,
 output grid_mode
@@ -38,7 +38,6 @@ energy_consumption_calculator energy_calc (
 energy_source_controller decision_ctrl (
     .total_load(total_load),
     .solar_generation(solar_generation),
-    .battery_status(battery_status),
     .day_flag(day_flag),
     .solar_mode(solar_mode),
     .battery_mode(battery_mode),
