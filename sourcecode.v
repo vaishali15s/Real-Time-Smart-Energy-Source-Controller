@@ -8,6 +8,7 @@ module home_energy_source_controller (
     input fridge_on, 
     input day_flag,
     input [6:0] battery_soc,
+    input [15:0] solar_generation,
 
     output solar_mode,
     output battery_mode,
@@ -15,7 +16,6 @@ module home_energy_source_controller (
 );
 
     wire [15:0] total_load;
-    wire [15:0] solar_generation;
     wire [15:0] energy_consumption;
     wire [15:0] cost;
 
@@ -29,11 +29,7 @@ module home_energy_source_controller (
         .total_load(total_load)
     );
 
-    // Solar generation
-    solar_generation_calculator solar_calc (
-        .day_flag(day_flag),
-        .solar_generation(solar_generation)
-    );
+
 
     // Energy + Cost
     energy_consumption_calculator energy_calc (
@@ -42,12 +38,10 @@ module home_energy_source_controller (
         .cost(cost)
     );
 
-    // FSM Controller
-    energy_fsm decision_ctrl (
-        .clk(clk),
-        .reset(reset),
-        .load(total_load),
-        .solar(solar_generation),
+    // Energy Source Controller
+    energy_source_controller decision_ctrl (
+        .total_load(total_load),
+        .solar_generation(solar_generation),
         .day_flag(day_flag),
         .battery_soc(battery_soc),
         .solar_mode(solar_mode),

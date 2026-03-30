@@ -7,6 +7,7 @@ module tb_home_energy_source_controller;
     reg ac_on, fan_on, wm_on, bulb_on, fridge_on;
     reg day_flag;
     reg [6:0] battery_soc;
+    reg [15:0] solar_input;
 
     wire solar_mode, battery_mode, grid_mode;
 
@@ -21,6 +22,7 @@ module tb_home_energy_source_controller;
         .fridge_on(fridge_on),
         .day_flag(day_flag),
         .battery_soc(battery_soc),
+        .solar_generation(solar_input),
         .solar_mode(solar_mode),
         .battery_mode(battery_mode),
         .grid_mode(grid_mode)
@@ -34,6 +36,7 @@ module tb_home_energy_source_controller;
         input [8*40-1:0] name;
         input i_ac, i_fan, i_wm, i_bulb, i_fridge, i_day;
         input [6:0] i_soc;
+        input [15:0] i_solar;
         begin
             ac_on = i_ac;
             fan_on = i_fan;
@@ -42,6 +45,7 @@ module tb_home_energy_source_controller;
             fridge_on = i_fridge;
             day_flag = i_day;
             battery_soc = i_soc;
+            solar_input = i_solar;
 
             #10; // wait for combinational settle
 
@@ -53,9 +57,9 @@ module tb_home_energy_source_controller;
                 $display("ERROR [%0t] %0s -> outputs not one-hot: S=%0b B=%0b G=%0b",
                          $time, name, solar_mode, battery_mode, grid_mode);
 
-            $display("[%0t] %0s | day=%0b SOC=%0d load=%0d solar_gen=%0d cost=%0d => S=%0b B=%0b G=%0b",
+            $display("[%0t] %0s | day=%0b SOC=%0d load=%0d solar=%0d cost=%0d => S=%0b B=%0b G=%0b",
                      $time, name, day_flag, battery_soc,
-                     dut.total_load, dut.solar_generation, dut.cost,
+                     dut.total_load, solar_input, dut.cost,
                      solar_mode, battery_mode, grid_mode);
         end
     endtask
@@ -64,19 +68,19 @@ module tb_home_energy_source_controller;
         // Init
         reset = 1;
         ac_on = 0; fan_on = 0; wm_on = 0; bulb_on = 0; fridge_on = 0;
-        day_flag = 0; battery_soc = 0;
+        day_flag = 0; battery_soc = 50; solar_input = 0;
 
         #12;
         reset = 0;
 
         // Test scenarios
-        run_case("C1: Day, no load, battery off",      0,0,0,0,0,1,10);
-        run_case("C2: Day, light load, battery off",   0,1,0,1,0,1,15);
-        run_case("C3: Day, high load, battery on",     1,1,1,1,1,1,80);
-        run_case("C4: Day, high load, battery off",    1,1,1,1,1,1,10);
-        run_case("C5: Night, medium load, battery on", 1,1,0,1,0,0,70);
-        run_case("C6: Night, medium load, battery off",1,1,0,1,0,0,10);
-        run_case("C7: Night, no load, battery on",     0,0,0,0,0,0,60);
+        run_case("C1: Day, no load, solar high",      0,0,0,0,0,1,50,14000);
+        run_case("C2: Day, light load, solar high",   0,1,0,1,0,1,40,14000);
+        run_case("C3: Day, high load, solar low",     1,1,1,1,1,1,80,2000);
+        run_case("C4: Day, high load, solar low",    1,1,1,1,1,1,10,2000);
+        run_case("C5: Night, medium load, good batt", 1,1,0,1,0,0,70,0);
+        run_case("C6: Night, medium load, low batt",1,1,0,1,0,0,10,0);
+        run_case("C7: Night, no load, good batt",     0,0,0,0,0,0,60,0);
 
         #20;
         $finish;
