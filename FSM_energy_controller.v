@@ -11,35 +11,24 @@ module energy_fsm (
     output reg grid_mode
 );
 
-    // -------------------------------
-    // 1. State Encoding
-    // -------------------------------
+    // STATES
     parameter SOLAR      = 2'b00;
     parameter BATTERY    = 2'b01;
     parameter GRID       = 2'b10;
     parameter TRANSITION = 2'b11;
 
-    // -------------------------------
-    // 2. SOC Thresholds
-    // -------------------------------
+    // SOC LIMITS
     parameter SOC_LOW  = 7'd20;
     parameter SOC_HIGH = 7'd80;
 
-    // -------------------------------
-    // 3. Registers
-    // -------------------------------
     reg [1:0] current_state, next_state;
     reg [1:0] target_state;
 
-    // -------------------------------
-    // 4. Counter
-    // -------------------------------
+    // Transition delay
     reg [3:0] counter;
     parameter DELAY = 4'd5;
 
-    // -------------------------------
-    // 5. State Register
-    // -------------------------------
+    // STATE REGISTER
     always @(posedge clk or posedge reset) begin
         if (reset)
             current_state <= GRID;
@@ -47,9 +36,7 @@ module energy_fsm (
             current_state <= next_state;
     end
 
-    // -------------------------------
-    // 6. Counter Logic
-    // -------------------------------
+    // COUNTER
     always @(posedge clk or posedge reset) begin
         if (reset)
             counter <= 0;
@@ -59,9 +46,7 @@ module energy_fsm (
             counter <= 0;
     end
 
-    // -------------------------------
-    // 7. Decision Logic (Target State)
-    // -------------------------------
+    // TARGET STATE LOGIC
     always @(*) begin
         case (current_state)
 
@@ -84,29 +69,27 @@ module energy_fsm (
             GRID: begin
                 if (day_flag && solar >= load)
                     target_state = SOLAR;
-                else if (battery_soc > SOC_HIGH)
+                else if (battery_soc > SOC_LOW)   // ✅ FIXED
                     target_state = BATTERY;
                 else
                     target_state = GRID;
             end
 
             TRANSITION: begin
-                target_state = target_state; // hold previous
+                target_state = target_state; // hold
             end
 
             default: target_state = GRID;
         endcase
     end
 
-    // -------------------------------
-    // 8. Next State Logic
-    // -------------------------------
+    // NEXT STATE LOGIC
     always @(*) begin
         case (current_state)
 
             TRANSITION: begin
                 if (counter >= DELAY)
-                    next_state = target_state;  // ✅ FIXED HERE
+                    next_state = target_state;   // ✅ FIXED CORE BUG
                 else
                     next_state = TRANSITION;
             end
@@ -121,18 +104,16 @@ module energy_fsm (
         endcase
     end
 
-    // -------------------------------
-    // 9. Output Logic (Moore)
-    // -------------------------------
+    // OUTPUT LOGIC (MOORE)
     always @(*) begin
         solar_mode = 0;
         battery_mode = 0;
         grid_mode = 0;
 
         case (current_state)
-            SOLAR:      solar_mode = 1;
-            BATTERY:    battery_mode = 1;
-            GRID:       grid_mode = 1;
+            SOLAR:   solar_mode = 1;
+            BATTERY: battery_mode = 1;
+            GRID:    grid_mode = 1;
         endcase
     end
 
