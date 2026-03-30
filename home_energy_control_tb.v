@@ -6,7 +6,7 @@ module tb_home_energy_source_controller;
     reg reset;
     reg ac_on, fan_on, wm_on, bulb_on, fridge_on;
     reg day_flag;
-    reg battery_status;
+    reg [6:0] battery_soc;
 
     wire solar_mode, battery_mode, grid_mode;
 
@@ -20,7 +20,7 @@ module tb_home_energy_source_controller;
         .bulb_on(bulb_on),
         .fridge_on(fridge_on),
         .day_flag(day_flag),
-        .battery_status(battery_status),
+        .battery_soc(battery_soc),
         .solar_mode(solar_mode),
         .battery_mode(battery_mode),
         .grid_mode(grid_mode)
@@ -32,7 +32,8 @@ module tb_home_energy_source_controller;
 
     task run_case;
         input [8*40-1:0] name;
-        input i_ac, i_fan, i_wm, i_bulb, i_fridge, i_day, i_batt;
+        input i_ac, i_fan, i_wm, i_bulb, i_fridge, i_day;
+        input [6:0] i_soc;
         begin
             ac_on = i_ac;
             fan_on = i_fan;
@@ -40,7 +41,7 @@ module tb_home_energy_source_controller;
             bulb_on = i_bulb;
             fridge_on = i_fridge;
             day_flag = i_day;
-            battery_status = i_batt;
+            battery_soc = i_soc;
 
             #10; // wait for combinational settle
 
@@ -52,8 +53,8 @@ module tb_home_energy_source_controller;
                 $display("ERROR [%0t] %0s -> outputs not one-hot: S=%0b B=%0b G=%0b",
                          $time, name, solar_mode, battery_mode, grid_mode);
 
-            $display("[%0t] %0s | day=%0b batt=%0b load=%0d solar_gen=%0d cost=%0d => S=%0b B=%0b G=%0b",
-                     $time, name, day_flag, battery_status,
+            $display("[%0t] %0s | day=%0b SOC=%0d load=%0d solar_gen=%0d cost=%0d => S=%0b B=%0b G=%0b",
+                     $time, name, day_flag, battery_soc,
                      dut.total_load, dut.solar_generation, dut.cost,
                      solar_mode, battery_mode, grid_mode);
         end
@@ -63,19 +64,19 @@ module tb_home_energy_source_controller;
         // Init
         reset = 1;
         ac_on = 0; fan_on = 0; wm_on = 0; bulb_on = 0; fridge_on = 0;
-        day_flag = 0; battery_status = 0;
+        day_flag = 0; battery_soc = 0;
 
         #12;
         reset = 0;
 
         // Test scenarios
-        run_case("C1: Day, no load, battery off",     0,0,0,0,0,1,0);
-        run_case("C2: Day, light load, battery off",  0,1,0,1,0,1,0);
-        run_case("C3: Day, high load, battery on",    1,1,1,1,1,1,1);
-        run_case("C4: Day, high load, battery off",   1,1,1,1,1,1,0);
-        run_case("C5: Night, medium load, battery on",1,1,0,1,0,0,1);
-        run_case("C6: Night, medium load, battery off",1,1,0,1,0,0,0);
-        run_case("C7: Night, no load, battery on",    0,0,0,0,0,0,1);
+        run_case("C1: Day, no load, battery off",      0,0,0,0,0,1,10);
+        run_case("C2: Day, light load, battery off",   0,1,0,1,0,1,15);
+        run_case("C3: Day, high load, battery on",     1,1,1,1,1,1,80);
+        run_case("C4: Day, high load, battery off",    1,1,1,1,1,1,10);
+        run_case("C5: Night, medium load, battery on", 1,1,0,1,0,0,70);
+        run_case("C6: Night, medium load, battery off",1,1,0,1,0,0,10);
+        run_case("C7: Night, no load, battery on",     0,0,0,0,0,0,60);
 
         #20;
         $finish;
