@@ -7,7 +7,6 @@ module home_energy_source_controller (
     input bulb_on,
     input fridge_on, 
     input day_flag,
-    input [6:0] battery_soc,
     input [15:0] solar_generation,
 
     output solar_mode,
@@ -15,6 +14,7 @@ module home_energy_source_controller (
     output grid_mode
 );
 
+    wire [6:0] battery_soc;
     wire [15:0] total_load;
     wire [15:0] energy_consumption;
     wire [15:0] cost;
@@ -28,7 +28,14 @@ module home_energy_source_controller (
         .fridge_on(fridge_on),
         .total_load(total_load)
     );
-
+    battery_soc_controller soc_ctrl(
+        .clk(clk),
+        .reset(reset),
+        .load(total_load),
+        .solar(solar_generation),
+        .battery_mode(battery_mode),
+        .battery_soc(battery_soc)
+);
 
 
     // Energy + Cost
