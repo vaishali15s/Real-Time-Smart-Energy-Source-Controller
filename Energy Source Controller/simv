@@ -7,29 +7,29 @@
 :vpi_module "C:\Users\iverilog\lib\ivl\vhdl_textio.vpi";
 :vpi_module "C:\Users\iverilog\lib\ivl\v2005_math.vpi";
 :vpi_module "C:\Users\iverilog\lib\ivl\va_math.vpi";
-S_00000205e0acd670 .scope module, "solar_generation_calculator" "solar_generation_calculator" 2 1;
+S_000001a4330ec670 .scope module, "solar_generation_calculator" "solar_generation_calculator" 2 1;
  .timescale -9 -12;
     .port_info 0 /INPUT 1 "day_flag";
     .port_info 1 /OUTPUT 16 "solar_generation";
-o00000205e0afb348 .functor BUFZ 1, C4<z>; HiZ drive
-v00000205e0aa2e90_0 .net "day_flag", 0 0, o00000205e0afb348;  0 drivers
-v00000205e0ad4580_0 .var "solar_generation", 15 0;
-E_00000205e0af52e0 .event anyedge, v00000205e0aa2e90_0;
-S_00000205e0acd800 .scope module, "tb_home_energy_source_controller" "tb_home_energy_source_controller" 3 3;
+o000001a433111238 .functor BUFZ 1, C4<z>; HiZ drive
+v000001a4330b2e90_0 .net "day_flag", 0 0, o000001a433111238;  0 drivers
+v000001a4330f6ac0_0 .var "solar_generation", 15 0;
+E_000001a4330e3380 .event anyedge, v000001a4330b2e90_0;
+S_000001a4330ec800 .scope module, "tb_home_energy_source_controller" "tb_home_energy_source_controller" 3 3;
  .timescale -9 -12;
-v00000205e0b50470_0 .var "ac_on", 0 0;
-v00000205e0b50510_0 .net "battery_mode", 0 0, v00000205e0ae40c0_0;  1 drivers
-v00000205e0b50650_0 .var "bulb_on", 0 0;
-v00000205e0b4f570_0 .var "clk", 0 0;
-v00000205e0b4fd90_0 .var "day_flag", 0 0;
-v00000205e0b505b0_0 .var "fan_on", 0 0;
-v00000205e0b4fa70_0 .var "fridge_on", 0 0;
-v00000205e0b50e70_0 .net "grid_mode", 0 0, v00000205e0ae42a0_0;  1 drivers
-v00000205e0b512d0_0 .var "reset", 0 0;
-v00000205e0b506f0_0 .var "solar_input", 15 0;
-v00000205e0b50a10_0 .net "solar_mode", 0 0, v00000205e0ae8750_0;  1 drivers
-v00000205e0b51370_0 .var "wm_on", 0 0;
-S_00000205e0ad4620 .scope module, "dut" "home_energy_source_controller" 3 13, 4 1 0, S_00000205e0acd800;
+v000001a4331677c0_0 .var "ac_on", 0 0;
+v000001a433166a00_0 .net "battery_mode", 0 0, v000001a4330f6dc0_0;  1 drivers
+v000001a433168260_0 .var "bulb_on", 0 0;
+v000001a433166aa0_0 .var "clk", 0 0;
+v000001a4331675e0_0 .var "day_flag", 0 0;
+v000001a433167a40_0 .var "fan_on", 0 0;
+v000001a433167900_0 .var "fridge_on", 0 0;
+v000001a4331670e0_0 .net "grid_mode", 0 0, v000001a433103240_0;  1 drivers
+v000001a433166e60_0 .var "reset", 0 0;
+v000001a433166780_0 .var "solar_input", 15 0;
+v000001a433166500_0 .net "solar_mode", 0 0, v000001a433103380_0;  1 drivers
+v000001a433166fa0_0 .var "wm_on", 0 0;
+S_000001a4330f6b60 .scope module, "dut" "home_energy_source_controller" 3 13, 4 1 0, S_000001a4330ec800;
  .timescale -9 -12;
     .port_info 0 /INPUT 1 "clk";
     .port_info 1 /INPUT 1 "reset";
@@ -43,23 +43,23 @@ S_00000205e0ad4620 .scope module, "dut" "home_energy_source_controller" 3 13, 4 
     .port_info 9 /OUTPUT 1 "solar_mode";
     .port_info 10 /OUTPUT 1 "battery_mode";
     .port_info 11 /OUTPUT 1 "grid_mode";
-v00000205e0b4ea60_0 .net "ac_on", 0 0, v00000205e0b50470_0;  1 drivers
-v00000205e0b4f000_0 .net "battery_mode", 0 0, v00000205e0ae40c0_0;  alias, 1 drivers
-v00000205e0b4e920_0 .net "battery_soc", 6 0, v00000205e0b4eba0_0;  1 drivers
-v00000205e0b4e9c0_0 .net "bulb_on", 0 0, v00000205e0b50650_0;  1 drivers
-v00000205e0b4ed80_0 .net "clk", 0 0, v00000205e0b4f570_0;  1 drivers
-v00000205e0b4eb00_0 .net "cost", 15 0, v00000205e0ae8a20_0;  1 drivers
-v00000205e0b4ee20_0 .net "day_flag", 0 0, v00000205e0b4fd90_0;  1 drivers
-v00000205e0b4f0a0_0 .net "energy_consumption", 15 0, v00000205e0b4e600_0;  1 drivers
-v00000205e0b4f1e0_0 .net "fan_on", 0 0, v00000205e0b505b0_0;  1 drivers
-v00000205e0b4e7e0_0 .net "fridge_on", 0 0, v00000205e0b4fa70_0;  1 drivers
-v00000205e0b4f280_0 .net "grid_mode", 0 0, v00000205e0ae42a0_0;  alias, 1 drivers
-v00000205e0b4f890_0 .net "reset", 0 0, v00000205e0b512d0_0;  1 drivers
-v00000205e0b4fe30_0 .net "solar_generation", 15 0, v00000205e0b506f0_0;  1 drivers
-v00000205e0b4f7f0_0 .net "solar_mode", 0 0, v00000205e0ae8750_0;  alias, 1 drivers
-v00000205e0b4fcf0_0 .net "total_load", 15 0, v00000205e0b4e880_0;  1 drivers
-v00000205e0b50830_0 .net "wm_on", 0 0, v00000205e0b51370_0;  1 drivers
-S_00000205e0ae3f30 .scope module, "decision_ctrl" "energy_source_controller" 4 44, 5 1 0, S_00000205e0ad4620;
+v000001a433164b20_0 .net "ac_on", 0 0, v000001a4331677c0_0;  1 drivers
+v000001a433164440_0 .net "battery_mode", 0 0, v000001a4330f6dc0_0;  alias, 1 drivers
+v000001a433164bc0_0 .net "battery_soc", 6 0, v000001a433164800_0;  1 drivers
+v000001a433164d00_0 .net "bulb_on", 0 0, v000001a433168260_0;  1 drivers
+v000001a433165200_0 .net "clk", 0 0, v000001a433166aa0_0;  1 drivers
+v000001a433164ee0_0 .net "cost", 15 0, v000001a4330fc480_0;  1 drivers
+v000001a433164e40_0 .net "day_flag", 0 0, v000001a4331675e0_0;  1 drivers
+v000001a433164f80_0 .net "energy_consumption", 15 0, v000001a433164620_0;  1 drivers
+v000001a433165020_0 .net "fan_on", 0 0, v000001a433167a40_0;  1 drivers
+v000001a4331650c0_0 .net "fridge_on", 0 0, v000001a433167900_0;  1 drivers
+v000001a433167720_0 .net "grid_mode", 0 0, v000001a433103240_0;  alias, 1 drivers
+v000001a433167180_0 .net "reset", 0 0, v000001a433166e60_0;  1 drivers
+v000001a4331679a0_0 .net "solar_generation", 15 0, v000001a433166780_0;  1 drivers
+v000001a433167040_0 .net "solar_mode", 0 0, v000001a433103380_0;  alias, 1 drivers
+v000001a4331674a0_0 .net "total_load", 15 0, v000001a433164da0_0;  1 drivers
+v000001a433167860_0 .net "wm_on", 0 0, v000001a433166fa0_0;  1 drivers
+S_000001a433103010 .scope module, "decision_ctrl" "energy_source_controller" 4 44, 5 1 0, S_000001a4330f6b60;
  .timescale -9 -12;
     .port_info 0 /INPUT 16 "total_load";
     .port_info 1 /INPUT 16 "solar_generation";
@@ -68,26 +68,26 @@ S_00000205e0ae3f30 .scope module, "decision_ctrl" "energy_source_controller" 4 4
     .port_info 4 /OUTPUT 1 "solar_mode";
     .port_info 5 /OUTPUT 1 "battery_mode";
     .port_info 6 /OUTPUT 1 "grid_mode";
-P_00000205e0af5420 .param/l "SOC_LOW" 0 5 12, C4<0010100>;
-v00000205e0ae40c0_0 .var "battery_mode", 0 0;
-v00000205e0ae4160_0 .net "battery_soc", 6 0, v00000205e0b4eba0_0;  alias, 1 drivers
-v00000205e0ae4200_0 .net "day_flag", 0 0, v00000205e0b4fd90_0;  alias, 1 drivers
-v00000205e0ae42a0_0 .var "grid_mode", 0 0;
-v00000205e0ae86b0_0 .net "solar_generation", 15 0, v00000205e0b506f0_0;  alias, 1 drivers
-v00000205e0ae8750_0 .var "solar_mode", 0 0;
-v00000205e0ae87f0_0 .net "total_load", 15 0, v00000205e0b4e880_0;  alias, 1 drivers
-E_00000205e0af54e0 .event anyedge, v00000205e0ae4200_0, v00000205e0ae86b0_0, v00000205e0ae87f0_0, v00000205e0ae4160_0;
-S_00000205e0ae8890 .scope module, "energy_calc" "energy_consumption_calculator" 4 39, 6 1 0, S_00000205e0ad4620;
+P_000001a4330e2a00 .param/l "SOC_LOW" 0 5 12, C4<0010100>;
+v000001a4330f6dc0_0 .var "battery_mode", 0 0;
+v000001a4330f6e60_0 .net "battery_soc", 6 0, v000001a433164800_0;  alias, 1 drivers
+v000001a4331031a0_0 .net "day_flag", 0 0, v000001a4331675e0_0;  alias, 1 drivers
+v000001a433103240_0 .var "grid_mode", 0 0;
+v000001a4331032e0_0 .net "solar_generation", 15 0, v000001a433166780_0;  alias, 1 drivers
+v000001a433103380_0 .var "solar_mode", 0 0;
+v000001a4330fc250_0 .net "total_load", 15 0, v000001a433164da0_0;  alias, 1 drivers
+E_000001a4330e3440 .event anyedge, v000001a4331031a0_0, v000001a4331032e0_0, v000001a4330fc250_0, v000001a4330f6e60_0;
+S_000001a4330fc2f0 .scope module, "energy_calc" "energy_consumption_calculator" 4 39, 6 1 0, S_000001a4330f6b60;
  .timescale 0 0;
     .port_info 0 /INPUT 16 "total_load";
     .port_info 1 /OUTPUT 16 "energy_consumption";
     .port_info 2 /OUTPUT 16 "cost";
-P_00000205e0af55e0 .param/l "price_per_unit" 0 6 6, +C4<00000000000000000000000000001000>;
-v00000205e0ae8a20_0 .var "cost", 15 0;
-v00000205e0b4e600_0 .var "energy_consumption", 15 0;
-v00000205e0b4f320_0 .net "total_load", 15 0, v00000205e0b4e880_0;  alias, 1 drivers
-E_00000205e0af5320 .event anyedge, v00000205e0ae87f0_0, v00000205e0b4e600_0;
-S_00000205e0a8dd50 .scope module, "load_calc" "load_calculator" 4 22, 7 1 0, S_00000205e0ad4620;
+P_000001a4330e3400 .param/l "price_per_unit" 0 6 6, +C4<00000000000000000000000000001000>;
+v000001a4330fc480_0 .var "cost", 15 0;
+v000001a433164620_0 .var "energy_consumption", 15 0;
+v000001a433164580_0 .net "total_load", 15 0, v000001a433164da0_0;  alias, 1 drivers
+E_000001a4330e2a40 .event anyedge, v000001a4330fc250_0, v000001a433164620_0;
+S_000001a4330fc520 .scope module, "load_calc" "load_calculator" 4 22, 7 1 0, S_000001a4330f6b60;
  .timescale -9 -12;
     .port_info 0 /INPUT 1 "ac_on";
     .port_info 1 /INPUT 1 "wm_on";
@@ -95,16 +95,16 @@ S_00000205e0a8dd50 .scope module, "load_calc" "load_calculator" 4 22, 7 1 0, S_0
     .port_info 3 /INPUT 1 "bulb_on";
     .port_info 4 /INPUT 1 "fridge_on";
     .port_info 5 /OUTPUT 16 "total_load";
-v00000205e0b4e6a0_0 .net "ac_on", 0 0, v00000205e0b50470_0;  alias, 1 drivers
-v00000205e0b4f140_0 .net "bulb_on", 0 0, v00000205e0b50650_0;  alias, 1 drivers
-v00000205e0b4ef60_0 .net "fan_on", 0 0, v00000205e0b505b0_0;  alias, 1 drivers
-v00000205e0b4eec0_0 .net "fridge_on", 0 0, v00000205e0b4fa70_0;  alias, 1 drivers
-v00000205e0b4e880_0 .var "total_load", 15 0;
-v00000205e0b4ece0_0 .net "wm_on", 0 0, v00000205e0b51370_0;  alias, 1 drivers
-E_00000205e0af5aa0/0 .event anyedge, v00000205e0b4e6a0_0, v00000205e0ae87f0_0, v00000205e0b4ece0_0, v00000205e0b4ef60_0;
-E_00000205e0af5aa0/1 .event anyedge, v00000205e0b4f140_0, v00000205e0b4eec0_0;
-E_00000205e0af5aa0 .event/or E_00000205e0af5aa0/0, E_00000205e0af5aa0/1;
-S_00000205e0a8dee0 .scope module, "soc_ctrl" "battery_soc_controller" 4 30, 8 1 0, S_00000205e0ad4620;
+v000001a4331652a0_0 .net "ac_on", 0 0, v000001a4331677c0_0;  alias, 1 drivers
+v000001a4331646c0_0 .net "bulb_on", 0 0, v000001a433168260_0;  alias, 1 drivers
+v000001a433164760_0 .net "fan_on", 0 0, v000001a433167a40_0;  alias, 1 drivers
+v000001a433164c60_0 .net "fridge_on", 0 0, v000001a433167900_0;  alias, 1 drivers
+v000001a433164da0_0 .var "total_load", 15 0;
+v000001a4331644e0_0 .net "wm_on", 0 0, v000001a433166fa0_0;  alias, 1 drivers
+E_000001a4330e2680/0 .event anyedge, v000001a4331652a0_0, v000001a4330fc250_0, v000001a4331644e0_0, v000001a433164760_0;
+E_000001a4330e2680/1 .event anyedge, v000001a4331646c0_0, v000001a433164c60_0;
+E_000001a4330e2680 .event/or E_000001a4330e2680/0, E_000001a4330e2680/1;
+S_000001a4330e90d0 .scope module, "soc_ctrl" "battery_soc_controller" 4 30, 8 1 0, S_000001a4330f6b60;
  .timescale 0 0;
     .port_info 0 /INPUT 1 "clk";
     .port_info 1 /INPUT 1 "reset";
@@ -112,286 +112,333 @@ S_00000205e0a8dee0 .scope module, "soc_ctrl" "battery_soc_controller" 4 30, 8 1 
     .port_info 3 /INPUT 16 "solar";
     .port_info 4 /INPUT 1 "battery_mode";
     .port_info 5 /OUTPUT 7 "battery_soc";
-P_00000205e0ad7a80 .param/l "STEP_CHARGE" 0 8 11, +C4<00000000000000000000000000000010>;
-P_00000205e0ad7ab8 .param/l "STEP_DISCHARGE" 0 8 12, +C4<00000000000000000000000000000001>;
-v00000205e0b4ec40_0 .net "battery_mode", 0 0, v00000205e0ae40c0_0;  alias, 1 drivers
-v00000205e0b4eba0_0 .var "battery_soc", 6 0;
-v00000205e0b4f3c0_0 .net "clk", 0 0, v00000205e0b4f570_0;  alias, 1 drivers
-v00000205e0b4e740_0 .net "load", 15 0, v00000205e0b4e880_0;  alias, 1 drivers
-v00000205e0b4e560_0 .net "reset", 0 0, v00000205e0b512d0_0;  alias, 1 drivers
-v00000205e0b4e4c0_0 .net "solar", 15 0, v00000205e0b506f0_0;  alias, 1 drivers
-E_00000205e0af5660 .event posedge, v00000205e0b4e560_0, v00000205e0b4f3c0_0;
-S_00000205e0aa2830 .scope task, "run_case" "run_case" 3 31, 3 31 0, S_00000205e0acd800;
+P_000001a4330e9260 .param/l "NO_LOAD_DRAIN_PERIOD" 0 8 13, +C4<00000000000000000000000000001000>;
+P_000001a4330e9298 .param/l "STEP_CHARGE" 0 8 11, +C4<00000000000000000000000000000010>;
+P_000001a4330e92d0 .param/l "STEP_DISCHARGE" 0 8 12, +C4<00000000000000000000000000000001>;
+v000001a4331643a0_0 .net "battery_mode", 0 0, v000001a4330f6dc0_0;  alias, 1 drivers
+v000001a433164800_0 .var "battery_soc", 6 0;
+v000001a4331648a0_0 .net "clk", 0 0, v000001a433166aa0_0;  alias, 1 drivers
+v000001a433165160_0 .net "load", 15 0, v000001a433164da0_0;  alias, 1 drivers
+v000001a433164940_0 .var "no_load_ctr", 3 0;
+v000001a4331649e0_0 .net "reset", 0 0, v000001a433166e60_0;  alias, 1 drivers
+v000001a433164a80_0 .net "solar", 15 0, v000001a433166780_0;  alias, 1 drivers
+E_000001a4330e2a80 .event posedge, v000001a4331649e0_0, v000001a4331648a0_0;
+S_000001a4330e9310 .scope task, "run_case" "run_case" 3 31, 3 31 0, S_000001a4330ec800;
  .timescale -9 -12;
-v00000205e0b4f9d0_0 .var "i_ac", 0 0;
-v00000205e0b50010_0 .var "i_bulb", 0 0;
-v00000205e0b4f6b0_0 .var "i_day", 0 0;
-v00000205e0b500b0_0 .var "i_fan", 0 0;
-v00000205e0b4f930_0 .var "i_fridge", 0 0;
-v00000205e0b510f0_0 .var "i_solar", 15 0;
-v00000205e0b50f10_0 .var "i_wm", 0 0;
-v00000205e0b4f750_0 .var "name", 319 0;
+v000001a4331666e0_0 .var "i_ac", 0 0;
+v000001a433166460_0 .var "i_bulb", 0 0;
+v000001a4331668c0_0 .var "i_day", 0 0;
+v000001a433166f00_0 .var "i_fan", 0 0;
+v000001a433167e00_0 .var "i_fridge", 0 0;
+v000001a433166960_0 .var "i_solar", 15 0;
+v000001a433167cc0_0 .var "i_wm", 0 0;
+v000001a433167c20_0 .var "name", 319 0;
 TD_tb_home_energy_source_controller.run_case ;
-    %load/vec4 v00000205e0b4f9d0_0;
-    %store/vec4 v00000205e0b50470_0, 0, 1;
-    %load/vec4 v00000205e0b500b0_0;
-    %store/vec4 v00000205e0b505b0_0, 0, 1;
-    %load/vec4 v00000205e0b50f10_0;
-    %store/vec4 v00000205e0b51370_0, 0, 1;
-    %load/vec4 v00000205e0b50010_0;
-    %store/vec4 v00000205e0b50650_0, 0, 1;
-    %load/vec4 v00000205e0b4f930_0;
-    %store/vec4 v00000205e0b4fa70_0, 0, 1;
-    %load/vec4 v00000205e0b4f6b0_0;
-    %store/vec4 v00000205e0b4fd90_0, 0, 1;
-    %load/vec4 v00000205e0b510f0_0;
-    %store/vec4 v00000205e0b506f0_0, 0, 16;
+    %load/vec4 v000001a4331666e0_0;
+    %store/vec4 v000001a4331677c0_0, 0, 1;
+    %load/vec4 v000001a433166f00_0;
+    %store/vec4 v000001a433167a40_0, 0, 1;
+    %load/vec4 v000001a433167cc0_0;
+    %store/vec4 v000001a433166fa0_0, 0, 1;
+    %load/vec4 v000001a433166460_0;
+    %store/vec4 v000001a433168260_0, 0, 1;
+    %load/vec4 v000001a433167e00_0;
+    %store/vec4 v000001a433167900_0, 0, 1;
+    %load/vec4 v000001a4331668c0_0;
+    %store/vec4 v000001a4331675e0_0, 0, 1;
+    %load/vec4 v000001a433166960_0;
+    %store/vec4 v000001a433166780_0, 0, 16;
     %delay 10000, 0;
-    %load/vec4 v00000205e0b50a10_0;
+    %load/vec4 v000001a433166500_0;
     %cmpi/e 1, 1, 1;
     %jmp/1 T_0.3, 6;
     %flag_mov 8, 6;
-    %load/vec4 v00000205e0b50510_0;
+    %load/vec4 v000001a433166a00_0;
     %cmpi/e 1, 1, 1;
     %flag_or 6, 8;
 T_0.3;
     %jmp/1 T_0.2, 6;
     %flag_mov 8, 6;
-    %load/vec4 v00000205e0b50e70_0;
+    %load/vec4 v000001a4331670e0_0;
     %cmpi/e 1, 1, 1;
     %flag_or 6, 8;
 T_0.2;
     %jmp/0xz  T_0.0, 6;
-    %vpi_call 3 47 "$display", "ERROR [%0t] %0s -> X detected in outputs", $time, v00000205e0b4f750_0 {0 0 0};
+    %vpi_call 3 47 "$display", "ERROR [%0t] %0s -> X detected in outputs", $time, v000001a433167c20_0 {0 0 0};
 T_0.0 ;
-    %load/vec4 v00000205e0b50a10_0;
+    %load/vec4 v000001a433166500_0;
     %pad/u 32;
-    %load/vec4 v00000205e0b50510_0;
+    %load/vec4 v000001a433166a00_0;
     %pad/u 32;
     %add;
-    %load/vec4 v00000205e0b50e70_0;
+    %load/vec4 v000001a4331670e0_0;
     %pad/u 32;
     %add;
     %cmpi/ne 1, 0, 32;
     %jmp/0xz  T_0.4, 4;
-    %vpi_call 3 50 "$display", "ERROR [%0t] %0s -> outputs not one-hot: S=%0b B=%0b G=%0b", $time, v00000205e0b4f750_0, v00000205e0b50a10_0, v00000205e0b50510_0, v00000205e0b50e70_0 {0 0 0};
+    %vpi_call 3 50 "$display", "ERROR [%0t] %0s -> outputs not one-hot: S=%0b B=%0b G=%0b", $time, v000001a433167c20_0, v000001a433166500_0, v000001a433166a00_0, v000001a4331670e0_0 {0 0 0};
 T_0.4 ;
-    %vpi_call 3 53 "$display", "[%0t] %0s | day=%0b SOC=%0d load=%0d solar=%0d cost=%0d => S=%0b B=%0b G=%0b", $time, v00000205e0b4f750_0, v00000205e0b4fd90_0, v00000205e0b4e920_0, v00000205e0b4fcf0_0, v00000205e0b506f0_0, v00000205e0b4eb00_0, v00000205e0b50a10_0, v00000205e0b50510_0, v00000205e0b50e70_0 {0 0 0};
+    %vpi_call 3 53 "$display", "[%0t] %0s | day=%0b SOC=%0d load=%0d solar=%0d cost=%0d => S=%0b B=%0b G=%0b", $time, v000001a433167c20_0, v000001a4331675e0_0, v000001a433164bc0_0, v000001a4331674a0_0, v000001a433166780_0, v000001a433164ee0_0, v000001a433166500_0, v000001a433166a00_0, v000001a4331670e0_0 {0 0 0};
     %end;
-    .scope S_00000205e0acd670;
+    .scope S_000001a4330ec670;
 T_1 ;
-    %wait E_00000205e0af52e0;
-    %load/vec4 v00000205e0aa2e90_0;
+    %wait E_000001a4330e3380;
+    %load/vec4 v000001a4330b2e90_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_1.0, 8;
     %pushi/vec4 1600, 0, 16;
-    %store/vec4 v00000205e0ad4580_0, 0, 16;
+    %store/vec4 v000001a4330f6ac0_0, 0, 16;
     %jmp T_1.1;
 T_1.0 ;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0ad4580_0, 0, 16;
+    %store/vec4 v000001a4330f6ac0_0, 0, 16;
 T_1.1 ;
     %jmp T_1;
     .thread T_1, $push;
-    .scope S_00000205e0a8dd50;
+    .scope S_000001a4330fc520;
 T_2 ;
-    %wait E_00000205e0af5aa0;
+    %wait E_000001a4330e2680;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
-    %load/vec4 v00000205e0b4e6a0_0;
+    %store/vec4 v000001a433164da0_0, 0, 16;
+    %load/vec4 v000001a4331652a0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_2.0, 8;
-    %load/vec4 v00000205e0b4e880_0;
+    %load/vec4 v000001a433164da0_0;
     %addi 1500, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
+    %store/vec4 v000001a433164da0_0, 0, 16;
 T_2.0 ;
-    %load/vec4 v00000205e0b4ece0_0;
+    %load/vec4 v000001a4331644e0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_2.2, 8;
-    %load/vec4 v00000205e0b4e880_0;
+    %load/vec4 v000001a433164da0_0;
     %addi 500, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
+    %store/vec4 v000001a433164da0_0, 0, 16;
 T_2.2 ;
-    %load/vec4 v00000205e0b4ef60_0;
+    %load/vec4 v000001a433164760_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_2.4, 8;
-    %load/vec4 v00000205e0b4e880_0;
+    %load/vec4 v000001a433164da0_0;
     %addi 200, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
+    %store/vec4 v000001a433164da0_0, 0, 16;
 T_2.4 ;
-    %load/vec4 v00000205e0b4f140_0;
+    %load/vec4 v000001a4331646c0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_2.6, 8;
-    %load/vec4 v00000205e0b4e880_0;
+    %load/vec4 v000001a433164da0_0;
     %addi 100, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
+    %store/vec4 v000001a433164da0_0, 0, 16;
 T_2.6 ;
-    %load/vec4 v00000205e0b4eec0_0;
+    %load/vec4 v000001a433164c60_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_2.8, 8;
-    %load/vec4 v00000205e0b4e880_0;
+    %load/vec4 v000001a433164da0_0;
     %addi 300, 0, 16;
-    %store/vec4 v00000205e0b4e880_0, 0, 16;
+    %store/vec4 v000001a433164da0_0, 0, 16;
 T_2.8 ;
     %jmp T_2;
     .thread T_2, $push;
-    .scope S_00000205e0a8dee0;
+    .scope S_000001a4330e90d0;
 T_3 ;
-    %wait E_00000205e0af5660;
-    %load/vec4 v00000205e0b4e560_0;
+    %wait E_000001a4330e2a80;
+    %load/vec4 v000001a4331649e0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_3.0, 8;
     %pushi/vec4 50, 0, 7;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %assign/vec4 v000001a433164800_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
     %jmp T_3.1;
 T_3.0 ;
-    %load/vec4 v00000205e0b4e740_0;
-    %load/vec4 v00000205e0b4e4c0_0;
+    %load/vec4 v000001a433165160_0;
+    %load/vec4 v000001a433164a80_0;
     %cmp/u;
     %jmp/0xz  T_3.2, 5;
-    %load/vec4 v00000205e0b4eba0_0;
+    %load/vec4 v000001a433164800_0;
     %pad/u 32;
     %cmpi/u 100, 0, 32;
     %jmp/0xz  T_3.4, 5;
-    %load/vec4 v00000205e0b4eba0_0;
+    %load/vec4 v000001a433164800_0;
     %pad/u 32;
     %addi 2, 0, 32;
     %pad/u 7;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %assign/vec4 v000001a433164800_0, 0;
     %jmp T_3.5;
 T_3.4 ;
     %pushi/vec4 100, 0, 7;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %assign/vec4 v000001a433164800_0, 0;
 T_3.5 ;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
     %jmp T_3.3;
 T_3.2 ;
-    %load/vec4 v00000205e0b4ec40_0;
+    %load/vec4 v000001a4331643a0_0;
     %flag_set/vec4 8;
     %jmp/0xz  T_3.6, 8;
-    %load/vec4 v00000205e0b4eba0_0;
+    %load/vec4 v000001a433165160_0;
+    %cmpi/e 0, 0, 16;
+    %jmp/0xz  T_3.8, 4;
+    %load/vec4 v000001a433164940_0;
+    %pad/u 32;
+    %cmpi/u 7, 0, 32;
+    %flag_inv 5; GE is !LT
+    %jmp/0xz  T_3.10, 5;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
+    %load/vec4 v000001a433164800_0;
     %pad/u 32;
     %cmpi/u 0, 0, 32;
     %flag_or 5, 4; GT is !LE
     %flag_inv 5;
-    %jmp/0xz  T_3.8, 5;
-    %load/vec4 v00000205e0b4eba0_0;
+    %jmp/0xz  T_3.12, 5;
+    %load/vec4 v000001a433164800_0;
     %pad/u 32;
     %subi 1, 0, 32;
     %pad/u 7;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %assign/vec4 v000001a433164800_0, 0;
+    %jmp T_3.13;
+T_3.12 ;
+    %pushi/vec4 0, 0, 7;
+    %assign/vec4 v000001a433164800_0, 0;
+T_3.13 ;
+    %jmp T_3.11;
+T_3.10 ;
+    %load/vec4 v000001a433164940_0;
+    %addi 1, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
+    %load/vec4 v000001a433164800_0;
+    %assign/vec4 v000001a433164800_0, 0;
+T_3.11 ;
     %jmp T_3.9;
 T_3.8 ;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
+    %load/vec4 v000001a433164800_0;
+    %pad/u 32;
+    %cmpi/u 0, 0, 32;
+    %flag_or 5, 4; GT is !LE
+    %flag_inv 5;
+    %jmp/0xz  T_3.14, 5;
+    %load/vec4 v000001a433164800_0;
+    %pad/u 32;
+    %subi 1, 0, 32;
+    %pad/u 7;
+    %assign/vec4 v000001a433164800_0, 0;
+    %jmp T_3.15;
+T_3.14 ;
     %pushi/vec4 0, 0, 7;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %assign/vec4 v000001a433164800_0, 0;
+T_3.15 ;
 T_3.9 ;
     %jmp T_3.7;
 T_3.6 ;
-    %load/vec4 v00000205e0b4eba0_0;
-    %assign/vec4 v00000205e0b4eba0_0, 0;
+    %load/vec4 v000001a433164800_0;
+    %assign/vec4 v000001a433164800_0, 0;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000001a433164940_0, 0;
 T_3.7 ;
 T_3.3 ;
 T_3.1 ;
     %jmp T_3;
     .thread T_3;
-    .scope S_00000205e0ae8890;
+    .scope S_000001a4330fc2f0;
 T_4 ;
-    %wait E_00000205e0af5320;
-    %load/vec4 v00000205e0b4f320_0;
-    %store/vec4 v00000205e0b4e600_0, 0, 16;
-    %load/vec4 v00000205e0b4e600_0;
+    %wait E_000001a4330e2a40;
+    %load/vec4 v000001a433164580_0;
+    %store/vec4 v000001a433164620_0, 0, 16;
+    %load/vec4 v000001a433164620_0;
     %pad/u 32;
     %muli 8, 0, 32;
     %pad/u 16;
-    %store/vec4 v00000205e0ae8a20_0, 0, 16;
+    %store/vec4 v000001a4330fc480_0, 0, 16;
     %jmp T_4;
     .thread T_4, $push;
-    .scope S_00000205e0ae3f30;
+    .scope S_000001a433103010;
 T_5 ;
-    %wait E_00000205e0af54e0;
+    %wait E_000001a4330e3440;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0ae8750_0, 0, 1;
+    %store/vec4 v000001a433103380_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0ae40c0_0, 0, 1;
+    %store/vec4 v000001a4330f6dc0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0ae42a0_0, 0, 1;
-    %load/vec4 v00000205e0ae4200_0;
+    %store/vec4 v000001a433103240_0, 0, 1;
+    %load/vec4 v000001a4331031a0_0;
     %pad/u 32;
     %cmpi/e 1, 0, 32;
     %jmp/0xz  T_5.0, 4;
-    %load/vec4 v00000205e0ae87f0_0;
-    %load/vec4 v00000205e0ae86b0_0;
+    %load/vec4 v000001a4330fc250_0;
+    %load/vec4 v000001a4331032e0_0;
     %cmp/u;
     %flag_or 5, 4;
     %jmp/0xz  T_5.2, 5;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0ae8750_0, 0, 1;
+    %store/vec4 v000001a433103380_0, 0, 1;
     %jmp T_5.3;
 T_5.2 ;
-    %load/vec4 v00000205e0ae4160_0;
+    %load/vec4 v000001a4330f6e60_0;
     %cmpi/u 20, 0, 7;
     %flag_or 5, 4; GT is !LE
     %flag_inv 5;
     %jmp/0xz  T_5.4, 5;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0ae40c0_0, 0, 1;
+    %store/vec4 v000001a4330f6dc0_0, 0, 1;
     %jmp T_5.5;
 T_5.4 ;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0ae42a0_0, 0, 1;
+    %store/vec4 v000001a433103240_0, 0, 1;
 T_5.5 ;
 T_5.3 ;
     %jmp T_5.1;
 T_5.0 ;
-    %load/vec4 v00000205e0ae4160_0;
+    %load/vec4 v000001a4330f6e60_0;
     %cmpi/u 20, 0, 7;
     %flag_or 5, 4; GT is !LE
     %flag_inv 5;
     %jmp/0xz  T_5.6, 5;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0ae40c0_0, 0, 1;
+    %store/vec4 v000001a4330f6dc0_0, 0, 1;
     %jmp T_5.7;
 T_5.6 ;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0ae42a0_0, 0, 1;
+    %store/vec4 v000001a433103240_0, 0, 1;
 T_5.7 ;
 T_5.1 ;
     %jmp T_5;
     .thread T_5, $push;
-    .scope S_00000205e0acd800;
+    .scope S_000001a4330ec800;
 T_6 ;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f570_0, 0, 1;
+    %store/vec4 v000001a433166aa0_0, 0, 1;
     %end;
     .thread T_6;
-    .scope S_00000205e0acd800;
+    .scope S_000001a4330ec800;
 T_7 ;
     %delay 5000, 0;
-    %load/vec4 v00000205e0b4f570_0;
+    %load/vec4 v000001a433166aa0_0;
     %inv;
-    %store/vec4 v00000205e0b4f570_0, 0, 1;
+    %store/vec4 v000001a433166aa0_0, 0, 1;
     %jmp T_7;
     .thread T_7;
-    .scope S_00000205e0acd800;
+    .scope S_000001a4330ec800;
 T_8 ;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b512d0_0, 0, 1;
+    %store/vec4 v000001a433166e60_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50470_0, 0, 1;
+    %store/vec4 v000001a4331677c0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b505b0_0, 0, 1;
+    %store/vec4 v000001a433167a40_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b51370_0, 0, 1;
+    %store/vec4 v000001a433166fa0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50650_0, 0, 1;
+    %store/vec4 v000001a433168260_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4fa70_0, 0, 1;
+    %store/vec4 v000001a433167900_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4fd90_0, 0, 1;
+    %store/vec4 v000001a4331675e0_0, 0, 1;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0b506f0_0, 0, 16;
+    %store/vec4 v000001a433166780_0, 0, 16;
     %delay 12000, 0;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b512d0_0, 0, 1;
+    %store/vec4 v000001a433166e60_0, 0, 1;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
@@ -411,22 +458,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 1751738216, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 14000, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -447,22 +494,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 1751738216, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 14000, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -483,22 +530,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 543977335, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 2000, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -519,22 +566,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 543977335, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 2000, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -555,22 +602,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 1819238756, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -591,22 +638,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 1819238756, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 1, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %pushi/vec4 0, 0, 32; draw_string_vec4
     %pushi/vec4 0, 0, 32; draw_string_vec4
@@ -627,22 +674,22 @@ T_8 ;
     %concat/vec4; draw_string_vec4
     %pushi/vec4 1819238756, 0, 32; draw_string_vec4
     %concat/vec4; draw_string_vec4
-    %store/vec4 v00000205e0b4f750_0, 0, 320;
+    %store/vec4 v000001a433167c20_0, 0, 320;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f9d0_0, 0, 1;
+    %store/vec4 v000001a4331666e0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b500b0_0, 0, 1;
+    %store/vec4 v000001a433166f00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50f10_0, 0, 1;
+    %store/vec4 v000001a433167cc0_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b50010_0, 0, 1;
+    %store/vec4 v000001a433166460_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f930_0, 0, 1;
+    %store/vec4 v000001a433167e00_0, 0, 1;
     %pushi/vec4 0, 0, 1;
-    %store/vec4 v00000205e0b4f6b0_0, 0, 1;
+    %store/vec4 v000001a4331668c0_0, 0, 1;
     %pushi/vec4 0, 0, 16;
-    %store/vec4 v00000205e0b510f0_0, 0, 16;
-    %fork TD_tb_home_energy_source_controller.run_case, S_00000205e0aa2830;
+    %store/vec4 v000001a433166960_0, 0, 16;
+    %fork TD_tb_home_energy_source_controller.run_case, S_000001a4330e9310;
     %join;
     %delay 20000, 0;
     %vpi_call 3 77 "$finish" {0 0 0};
