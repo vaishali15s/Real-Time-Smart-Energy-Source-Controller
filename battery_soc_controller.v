@@ -23,10 +23,10 @@ module battery_soc_controller (
 
             // Charging condition
             if (solar > load) begin
-                if (battery_soc < 100)
-                    battery_soc <= battery_soc + STEP_CHARGE;
-                else
+                if (battery_soc >= (7'd100 - STEP_CHARGE))
                     battery_soc <= 7'd100;
+                else
+                    battery_soc <= battery_soc + STEP_CHARGE;
                 no_load_ctr <= 4'd0;
             end
 

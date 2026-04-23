@@ -11,13 +11,24 @@ module home_energy_source_controller (
 
     output solar_mode,
     output battery_mode,
-    output grid_mode
+    output grid_mode,
+    output ac_supply,
+    output fridge_supply,
+    output wm_supply,
+    output fan_supply,
+    output bulb_supply,
+    output [15:0] final_load
 );
 
     wire [6:0] battery_soc;
     wire [15:0] total_load;
     wire [15:0] energy_consumption;
     wire [15:0] cost;
+    wire [15:0] available_power;
+
+    wire solar_mode_i;
+    wire battery_mode_i;
+    wire grid_mode_i;
 
     // Load calculation
     load_calculator load_calc (
@@ -37,10 +48,29 @@ module home_energy_source_controller (
         .battery_soc(battery_soc)
 );
 
+    assign available_power = solar_mode_i ? solar_generation :
+                             battery_mode_i ? (battery_soc * 16'd100) :
+                             16'hFFFF;
+
+    smart_load_manager load_manager (
+        .ac_on(ac_on),
+        .fridge_on(fridge_on),
+        .wm_on(wm_on),
+        .fan_on(fan_on),
+        .bulb_on(bulb_on),
+        .available_power(available_power),
+        .ac_supply(ac_supply),
+        .fridge_supply(fridge_supply),
+        .wm_supply(wm_supply),
+        .fan_supply(fan_supply),
+        .bulb_supply(bulb_supply),
+        .final_load(final_load)
+    );
+
 
     // Energy + Cost
     energy_consumption_calculator energy_calc (
-        .total_load(total_load),
+        .total_load(final_load),
         .energy_consumption(energy_consumption),
         .cost(cost)
     );
@@ -51,9 +81,13 @@ module home_energy_source_controller (
         .solar_generation(solar_generation),
         .day_flag(day_flag),
         .battery_soc(battery_soc),
-        .solar_mode(solar_mode),
-        .battery_mode(battery_mode),
-        .grid_mode(grid_mode)
+        .solar_mode(solar_mode_i),
+        .battery_mode(battery_mode_i),
+        .grid_mode(grid_mode_i)
     );
+
+    assign solar_mode = solar_mode_i;
+    assign battery_mode = battery_mode_i;
+    assign grid_mode = grid_mode_i;
 
 endmodule
