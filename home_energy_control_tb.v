@@ -153,6 +153,10 @@ module tb_home_energy_source_controller;
         run_case("C6 Night medium load",    1,1,0,1,0,0,0);
         run_case("C7 Night no load",        0,0,0,0,0,0,0);
 
+        // Force a low-but-usable SOC for a focused hybrid demonstration
+        dut.soc_ctrl.battery_soc = 7'd22;
+        run_case("C8 Day hybrid stress",    1,1,1,1,1,1,400);
+
         solar_pct = (total_cases == 0) ? 0.0 : (solar_cases * 100.0) / total_cases;
         battery_pct = (total_cases == 0) ? 0.0 : (battery_cases * 100.0) / total_cases;
         grid_pct = (total_cases == 0) ? 0.0 : (grid_cases * 100.0) / total_cases;

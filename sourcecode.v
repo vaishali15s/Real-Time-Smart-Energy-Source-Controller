@@ -49,7 +49,7 @@ module home_energy_source_controller (
 );
 
     assign available_power = solar_mode_i ? solar_generation :
-                             battery_mode_i ? (battery_soc * 16'd100) :
+                             battery_mode_i ? (solar_generation + (battery_soc * 16'd100)) :
                              16'hFFFF;
 
     smart_load_manager load_manager (
