@@ -1,34 +1,46 @@
 module energy_fsm (
     input clk,
     input reset,
+
     input [15:0] load,
     input [15:0] solar,
-    input day_flag,
     input [6:0] battery_soc,
+
+    input [1:0] tariff_slot,   // 00=Night,01=Day,10=Peak
+
+    // Fault Inputs
+    input battery_overtemp,
+    input solar_fault,
+    input overload,
+    input grid_fault,
 
     output reg solar_mode,
     output reg battery_mode,
-    output reg grid_mode
+    output reg grid_mode,
+    output reg fault_mode,
+
+    output reg [2:0] fault_code
 );
 
-    // STATES
-    parameter SOLAR      = 2'b00;
-    parameter BATTERY    = 2'b01;
-    parameter GRID       = 2'b10;
-    parameter TRANSITION = 2'b11;
+    //====================================================
+    // STATE ENCODING
+    //====================================================
+    parameter SOLAR   = 3'b000;
+    parameter BATTERY = 3'b001;
+    parameter GRID    = 3'b010;
+    parameter FAULT   = 3'b011;
 
-    // SOC LIMITS
+    reg [2:0] current_state, next_state;
+
+    //====================================================
+    // SOC THRESHOLDS
+    //====================================================
     parameter SOC_LOW  = 7'd20;
-    parameter SOC_HIGH = 7'd80;
+    parameter SOC_HIGH = 7'd60;
 
-    reg [1:0] current_state, next_state;
-    reg [1:0] target_state;
-
-    // Transition delay
-    reg [3:0] counter;
-    parameter DELAY = 4'd5;
-
+    //====================================================
     // STATE REGISTER
+    //====================================================
     always @(posedge clk or posedge reset) begin
         if (reset)
             current_state <= GRID;
@@ -36,84 +48,133 @@ module energy_fsm (
             current_state <= next_state;
     end
 
-    // COUNTER
-    always @(posedge clk or posedge reset) begin
-        if (reset)
-            counter <= 0;
-        else if (current_state == TRANSITION)
-            counter <= counter + 1;
-        else
-            counter <= 0;
-    end
-
-    // TARGET STATE LOGIC
-    always @(*) begin
-        case (current_state)
-
-            SOLAR: begin
-                if (!day_flag || solar < load)
-                    target_state = (battery_soc > SOC_LOW) ? BATTERY : GRID;
-                else
-                    target_state = SOLAR;
-            end
-
-            BATTERY: begin
-                if (day_flag && solar >= load)
-                    target_state = SOLAR;
-                else if (battery_soc <= SOC_LOW)
-                    target_state = GRID;
-                else
-                    target_state = BATTERY;
-            end
-
-            GRID: begin
-                if (day_flag && solar >= load)
-                    target_state = SOLAR;
-                else if (battery_soc > SOC_LOW)   // ✅ FIXED
-                    target_state = BATTERY;
-                else
-                    target_state = GRID;
-            end
-
-            TRANSITION: begin
-                target_state = target_state; // hold
-            end
-
-            default: target_state = GRID;
-        endcase
-    end
-
+    //====================================================
     // NEXT STATE LOGIC
+    //====================================================
     always @(*) begin
-        case (current_state)
 
-            TRANSITION: begin
-                if (counter >= DELAY)
-                    next_state = target_state;   // ✅ FIXED CORE BUG
+        next_state = current_state;
+
+        //------------------------------------------------
+        // HIGHEST PRIORITY = FAULT CHECK
+        //------------------------------------------------
+        if (battery_overtemp || overload ||
+           (solar_fault && tariff_slot == 2'b01) ||
+           (grid_fault  && current_state == GRID))
+        begin
+            next_state = FAULT;
+        end
+
+        else begin
+            case(current_state)
+
+            //--------------------------------------------
+            // SOLAR MODE
+            //--------------------------------------------
+            SOLAR:
+            begin
+                if ((tariff_slot == 2'b00) || (solar < load)) begin
+                    if (battery_soc > SOC_LOW)
+                        next_state = BATTERY;
+                    else
+                        next_state = GRID;
+                end
                 else
-                    next_state = TRANSITION;
+                    next_state = SOLAR;
             end
 
-            default: begin
-                if (target_state != current_state)
-                    next_state = TRANSITION;
+            //--------------------------------------------
+            // BATTERY MODE
+            //--------------------------------------------
+            BATTERY:
+            begin
+                if (battery_soc <= SOC_LOW)
+                    next_state = GRID;
+
+                else if ((tariff_slot == 2'b01) && (solar >= load))
+                    next_state = SOLAR;
+
                 else
-                    next_state = current_state;
+                    next_state = BATTERY;
             end
 
-        endcase
+            //--------------------------------------------
+            // GRID MODE
+            //--------------------------------------------
+            GRID:
+            begin
+                // Peak tariff => prefer battery
+                if (tariff_slot == 2'b10 && battery_soc > SOC_HIGH)
+                    next_state = BATTERY;
+
+                // Day + enough solar
+                else if (tariff_slot == 2'b01 && solar >= load)
+                    next_state = SOLAR;
+
+                else
+                    next_state = GRID;
+            end
+
+            //--------------------------------------------
+            // FAULT MODE
+            //--------------------------------------------
+            FAULT:
+            begin
+                // Auto recover when all faults clear
+                if (!(battery_overtemp || solar_fault || overload || grid_fault))
+                    next_state = GRID;
+                else
+                    next_state = FAULT;
+            end
+
+            default:
+                next_state = GRID;
+
+            endcase
+        end
     end
 
-    // OUTPUT LOGIC (MOORE)
+    //====================================================
+    // OUTPUT LOGIC
+    //====================================================
     always @(*) begin
-        solar_mode = 0;
+        solar_mode   = 0;
         battery_mode = 0;
-        grid_mode = 0;
+        grid_mode    = 0;
+        fault_mode   = 0;
+        fault_code   = 3'b000;
 
-        case (current_state)
-            SOLAR:   solar_mode = 1;
-            BATTERY: battery_mode = 1;
-            GRID:    grid_mode = 1;
+        case(current_state)
+
+        //--------------------------------------------
+        SOLAR:
+            solar_mode = 1;
+
+        //--------------------------------------------
+        BATTERY:
+            battery_mode = 1;
+
+        //--------------------------------------------
+        GRID:
+            grid_mode = 1;
+
+        //--------------------------------------------
+        FAULT:
+        begin
+            fault_mode = 1;
+
+            if (battery_overtemp)
+                fault_code = 3'b001;
+            else if (solar_fault)
+                fault_code = 3'b010;
+            else if (overload)
+                fault_code = 3'b011;
+            else if (grid_fault)
+                fault_code = 3'b100;
+            else
+                fault_code = 3'b111;
+        end
+
         endcase
     end
 
