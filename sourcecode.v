@@ -1,5 +1,23 @@
 `timescale 1ns/1ps
 
+//============================================================================
+// HOME ENERGY SOURCE CONTROLLER (TOP-LEVEL SYSTEM MODULE)
+//============================================================================\n// Orchestrates smart home energy management across multiple sources
+// (solar, battery, grid) with tariff-aware selection and fault protection.
+//
+// ARCHITECTURE:\n//   1. Load calculation: Sum appliance power demands
+//   2. Tariff mapping: Select pricing tier based on time-of-use
+//   3. Fault aggregation: Collect and decode fault signals
+//   4. FSM control: Run energy_fsm for source selection
+//   5. Battery management: Run battery_soc_controller for SOC tracking
+//   6. Cost calculation: Track grid cost and battery wear cost
+//   7. Load gating: Disconnect appliances during fault
+//
+// MAIN OUTPUTS:\n//   - Mode indicators: solar_mode, battery_mode, grid_mode, fault_mode, idle_mode
+//   - Appliance supplies: ac_supply, fridge_supply, wm_supply, fan_supply, bulb_supply
+//   - Cost tracking: grid_cost, battery_wear_cost, total_operating_cost
+//============================================================================
+
 module home_energy_source_controller (
     input  wire        clk,
     input  wire        reset,
@@ -20,6 +38,7 @@ module home_energy_source_controller (
     output reg         battery_mode,
     output reg         grid_mode,
     output reg         fault_mode,
+    output reg         idle_mode,
     output reg [2:0]   fault_code,
     output reg         ac_supply,
     output reg         fridge_supply,
@@ -30,41 +49,65 @@ module home_energy_source_controller (
     output reg [3:0]   tariff_per_unit
 );
 
-    // Per-appliance load (units)
-    localparam [15:0] AC_LOAD     = 16'd1500;
-    localparam [15:0] FRIDGE_LOAD = 16'd300;
-    localparam [15:0] WM_LOAD     = 16'd500;
-    localparam [15:0] FAN_LOAD    = 16'd75;
-    localparam [15:0] BULB_LOAD   = 16'd20;
+    // Per-appliance load (units - watts equivalent)
+    //   Each appliance has a nominal power consumption in watts
+    localparam [15:0] AC_LOAD     = 16'd1500;  // Air conditioner
+    localparam [15:0] FRIDGE_LOAD = 16'd300;   // Refrigerator\n    localparam [15:0] WM_LOAD     = 16'd500;   // Washing machine
+    localparam [15:0] FAN_LOAD    = 16'd75;    // Fan
+    localparam [15:0] BULB_LOAD   = 16'd20;    // Light bulb
 
-    // Tariff
-    localparam [3:0] RATE_NIGHT = 4'd5;
-    localparam [3:0] RATE_DAY   = 4'd8;
-    localparam [3:0] RATE_PEAK  = 4'd10;
+    // Time-of-use tariff rates (₹ per unit or equivalent cost)
+    //   Rates vary by time period to incentivize off-peak usage
+    localparam [3:0] RATE_NIGHT = 4'd5;   // Off-peak (lowest cost)
+    localparam [3:0] RATE_DAY   = 4'd8;   // Mid-peak
+    localparam [3:0] RATE_PEAK  = 4'd10;  // Peak evening (highest cost)
 
-    // Battery policy
-    localparam [6:0] MIN_SOC_FOR_DISCHARGE = 7'd20;
-    localparam integer BATTERY_COST_PER_UNIT = 2; // NEW: degradation/wear proxy
-    localparam [15:0] OVERLOAD_LIMIT = 16'd2300;
+    // Battery and protection parameters
+    localparam [6:0] MIN_SOC_FOR_DISCHARGE = 7'd20;  // Don't discharge below 20% SOC
+    localparam integer BATTERY_COST_PER_UNIT = 2;    // Wear cost per unit (proxy for degradation)
+    localparam [15:0] OVERLOAD_LIMIT = 16'd2300;     // Maximum safe load (W)
 
     // Internal signals (TB hierarchical access)
-    reg  [15:0] total_load;   // dut.total_load
-    integer     cost;         // dut.cost
-    wire [6:0]  battery_soc;  // dut.battery_soc
-    reg         charge_en, discharge_en;
-    reg  [1:0]  tariff_slot;
-    wire        battery_overtemp, solar_fault, overload, grid_fault;
-    wire        overload_auto;
+    // Energy tracking
+    reg  [15:0] total_load;   // Aggregate load from all active appliances
+
+    // Cost tracking (renamed for clarity)
+    integer     grid_cost;            // Cost of electricity from grid (₹)
+    integer     battery_wear_cost;    // Proxy cost for battery degradation (₹)
+    integer     total_operating_cost; // Sum of grid + battery wear costs
+    integer     cost;                 // Legacy alias for testbench compatibility
+
+    // Battery state
+    wire [6:0]  battery_soc;  // Battery state-of-charge (0-100%)
+
+    // Time-of-use control
+    reg  [1:0]  tariff_slot;  // Encoded tariff: 00=Night, 01=Day, 10=Peak
+
+    // Fault handling
+    wire        battery_overtemp, solar_fault, overload, grid_fault;  // Fault signals
+    wire        overload_auto;  // Auto-detected overload (load > LIMIT)
+
+    // FSM (Finite State Machine) interconnects
     wire        fsm_solar_mode, fsm_battery_mode, fsm_grid_mode, fsm_fault_mode;
     wire [2:0]  fsm_fault_code;
+    wire        fsm_idle_mode;
 
-    // Keep instance name for TB: dut.soc_ctrl.battery_soc
-    battery_soc_controller soc_ctrl (
+    // Peak-demand prediction & PWM charging
+    wire        fsm_precharge_request;  // FSM request to pre-charge battery
+    wire        fsm_pwm_out;            // PWM control signal
+    wire [7:0]  fsm_pwm_duty;           // PWM duty cycle
+
+    // Charging control
+    wire        allow_charge;  // Gate signal: allow charging only when no fault
+
+    //==========================================================================\n    // CHARGING GATE LOGIC\n    //==========================================================================\n    // Prevent battery charging during faults for safety.\n    // Charging allowed only when no fault mode is active.\n    assign allow_charge = !fsm_fault_mode;\n\n    //==========================================================================\n    // BATTERY SOC CONTROLLER INSTANTIATION\n    //==========================================================================\n    // Manages battery state-of-charge tracking and charging/discharging logic.\n    // Connected to:\n    //   - FSM precharge_request for anticipatory peak-demand charging\n    //   - allow_charge gate for fault protection\n    // Outputs battery_soc used by FSM and top-level outputs\n    //==========================================================================\n    // Use external battery_soc_controller implementation\n    // Keep instance name for TB: dut.soc_ctrl.battery_soc\n    battery_soc_controller soc_ctrl (
         .clk(clk),
         .reset(reset),
-        .charge_en(charge_en),
-        .discharge_en(discharge_en),
-        .discharge_load(final_load),   // NEW
+        .load(final_load),
+        .solar(solar_generation),
+        .battery_mode(battery_mode),
+        .allow_charge(allow_charge),
+        .precharge_request(fsm_precharge_request),
         .battery_soc(battery_soc)
     );
 
@@ -83,9 +126,20 @@ module home_energy_source_controller (
         .battery_mode(fsm_battery_mode),
         .grid_mode(fsm_grid_mode),
         .fault_mode(fsm_fault_mode),
-        .fault_code(fsm_fault_code)
+        .fault_code(fsm_fault_code),
+        .precharge_request(fsm_precharge_request),
+        .pwm_out(fsm_pwm_out),
+        .pwm_duty(fsm_pwm_duty),
+        .idle_mode(fsm_idle_mode)
     );
 
+    //==========================================================================
+    // APPLIANCE LOAD CALCULATION (Combinational Logic)
+    //==========================================================================
+    // Aggregates individual appliance power demands into total system load.
+    // Each appliance power is added only if its on/off signal is asserted.
+    // Used by FSM for source selection and battery discharge rate calculation.
+    //==========================================================================
     // Requested total load
     always @(*) begin
         total_load = 16'd0;
@@ -96,6 +150,16 @@ module home_energy_source_controller (
         if (bulb_on)   total_load = total_load + BULB_LOAD;
     end
 
+    //==========================================================================
+    // TIME-OF-USE TARIFF SELECTION (Combinational Logic)
+    //==========================================================================
+    // Selects electricity rate and tariff slot based on time-of-day flags.
+    // Priorities:
+    //   1. Peak evening (highest cost): Encourage battery/solar use
+    //   2. Daytime (medium cost): Encourage solar charging
+    //   3. Night (lowest cost): Off-peak, grid-friendly period
+    // Output: tariff_per_unit (rate in ₹/kWh) and tariff_slot (FSM selector)
+    //==========================================================================
     // Tariff select
     always @(*) begin
         if (peak_evening_flag)      tariff_per_unit = RATE_PEAK;  // 10
@@ -107,6 +171,15 @@ module home_energy_source_controller (
         else                        tariff_slot = 2'b00;
     end
 
+    //==========================================================================
+    // FAULT DETECTION & AGGREGATION (Combinational Logic)
+    //==========================================================================
+    // Collects individual fault signals and detects auto-overload condition.
+    // Fault handling philosophy:
+    //   - External faults (battery temp, solar, grid) passed directly
+    //   - Overload detected as: (total_load > OVERLOAD_LIMIT) OR external flag
+    //   - Note: Low/zero solar during day is NOT a fault (handled by FSM)
+    //==========================================================================
     // Fault model hooks:
     // - solar_fault_in is treated as hazardous (trip-worthy) solar fault.
     // - normal low/zero solar generation is handled by source selection, not FAULT trip.
@@ -116,7 +189,17 @@ module home_energy_source_controller (
     assign overload = overload_in | overload_auto;
     assign grid_fault = grid_fault_in;
 
-    // Source + supply decision
+    //==========================================================================
+    // SOURCE SELECTION & APPLIANCE SUPPLY DECISION (Combinational Logic)
+    //==========================================================================
+    // Main decision engine for energy source and appliance control:
+    //   1. Calculate total load from active appliances
+    //   2. Map FSM output modes to final output signals
+    //   3. Handle IDLE state (no load = no source)
+    //   4. Restrict solar use at night (even if FSM requests)
+    //   5. Disconnect appliances during fault (safety)
+    //   6. Calculate operating costs
+    //==========================================================================
     always @(*) begin
         ac_supply     = ac_on;
         fridge_supply = fridge_on;
@@ -133,13 +216,20 @@ module home_energy_source_controller (
 
         // Keep no-load behavior deterministic for TB checks.
         if (final_load == 0) begin
-            grid_mode = 1'b1;
+            // Enter IDLE when there's no demand
+            idle_mode = 1'b1;
+            solar_mode = 1'b0;
+            battery_mode = 1'b0;
+            grid_mode = 1'b0;
+            fault_mode = 1'b0;
+            fault_code = 3'b000;
         end
         else begin
             solar_mode = fsm_solar_mode;
             battery_mode = fsm_battery_mode;
             grid_mode = fsm_grid_mode;
             fault_mode = fsm_fault_mode;
+            idle_mode = fsm_idle_mode;
             fault_code = fsm_fault_code;
 
             if (!day_flag && !peak_evening_flag && solar_mode) begin
@@ -164,50 +254,25 @@ module home_energy_source_controller (
             end
         end
 
-        // FIX #2: operating cost model
-        if (fault_mode)        cost = 0;
-        else if (grid_mode)    cost = final_load * tariff_per_unit;
-        else if (battery_mode) cost = final_load * BATTERY_COST_PER_UNIT;
-        else                   cost = 0; // solar mode
-
-        // SOC controls
-        charge_en    = (!fault_mode) && (solar_generation > final_load) && (battery_soc < 7'd100);
-        discharge_en = (!fault_mode) && battery_mode && (final_load != 0);
-    end
-
-endmodule
-
-
-module battery_soc_controller (
-    input  wire        clk,
-    input  wire        reset,
-    input  wire        charge_en,
-    input  wire        discharge_en,
-    input  wire [15:0] discharge_load,  // NEW
-    output reg  [6:0]  battery_soc
-);
-    reg [6:0] dec_step;
-    integer q;
-
-    always @(*) begin
-        q = discharge_load / 16'd500;   // requested scaling
-        if (q < 1)       dec_step = 7'd1;
-        else if (q > 10) dec_step = 7'd10;
-        else             dec_step = q[6:0];
-    end
-
-    always @(posedge clk or posedge reset) begin
-        if (reset) begin
-            battery_soc <= 7'd50;
+        // Operating cost model (renamed):
+        // - grid_cost: cost of electricity when grid supplies load
+        // - battery_wear_cost: proxy cost for using battery (degradation)
+        if (fault_mode) begin
+            grid_cost = 0;
+            battery_wear_cost = 0;
         end else begin
-            case ({charge_en, discharge_en})
-                2'b10: if (battery_soc < 7'd100) battery_soc <= battery_soc + 7'd1;
-                2'b01: begin
-                    if (battery_soc > dec_step) battery_soc <= battery_soc - dec_step;
-                    else                        battery_soc <= 7'd0;
-                end
-                default: battery_soc <= battery_soc;
-            endcase
+            if (grid_mode)      grid_cost = final_load * tariff_per_unit;
+            else                grid_cost = 0;
+
+            if (battery_mode)   battery_wear_cost = final_load * BATTERY_COST_PER_UNIT;
+            else                battery_wear_cost = 0;
         end
+        total_operating_cost = grid_cost + battery_wear_cost;
+        cost = total_operating_cost; // legacy alias for tests/TB
+
+        // SOC is handled inside `battery_soc_controller` (charging when solar > load,
+        // discharging when `battery_mode` is asserted). The FSM's precharge_request
+        // still influences system-level charging decisions via other actuators.
     end
+
 endmodule
